@@ -23,6 +23,8 @@ class Entity {
  public:
   Entity(unsigned int uid);
 
+  unsigned int get_uid();
+
   template <typename Comp>
   void add_component(std::shared_ptr<Comp> component) {
     components[typeid(Comp).name()] = component;
