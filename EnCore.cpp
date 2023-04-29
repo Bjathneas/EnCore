@@ -3,6 +3,8 @@
 namespace EnCore {
 Entity::Entity(unsigned int uid) : uid(uid) {}
 
+unsigned int Entity::get_uid() { return uid; }
+
 Manager::Manager() {}
 
 unsigned int Manager::create_entity() {
@@ -18,7 +20,7 @@ void Manager::destroy_entity(unsigned int uid) {
   entities.erase(entity, entities.end());
 }
 
-Entity* get_entity(unsigned int uid) {
+Entity* Manager::get_entity(unsigned int uid) {
   for (Entity* entity : entities) {
     if (entity->get_uid() == uid) return entity;
   }

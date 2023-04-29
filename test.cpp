@@ -1,15 +1,3 @@
-
-# EnCore
-
-EnCore is an Entity Component System that was developed for a game engine that I am still currently developing
-
-
-## Installation
-
-Add ```EnCore.h``` and ```EnCore.cpp``` to your project
-    
-## Usage/Examples
-```cpp
 //Include Encore
 #include "EnCore.h"
 
@@ -74,11 +62,3 @@ int main() {
 
     return 0;
 }
-```
-
-
-## Authors
-
-- [@Bjathneas](EnCore.h)
-
-
