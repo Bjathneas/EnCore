@@ -73,7 +73,8 @@ class Manager {
   std::vector<Entity*> get_entities_with_components() {
     std::vector<Entity*> entities_with_components;
 
-    for (Entity* entity : entities) {
+    for (std::pair<unsigned int, Entity*> pair : entities) {
+     Entity* entity = std::get<1>(pair);
       if (entity->contains<Comp>()) entities_with_components.push_back(entity);
     }
 
@@ -81,7 +82,8 @@ class Manager {
   }
 
  private:
-  std::vector<Entity*> entities;
+  // @TODO Make entities into a hashmap
+  std::unordered_map<unsigned int, Entity*> entities;
   unsigned int next_entity_id{0};
 };
 
