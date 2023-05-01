@@ -6,7 +6,7 @@ EnCore is an Entity Component System that was developed for a game engine that I
 
 ## Installation
 
-Add ```EnCore.h``` and ```EnCore.cpp``` to your project
+Add ```EnCore.h``` to your project
     
 ## Usage/Examples
 ```cpp
