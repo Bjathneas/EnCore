@@ -65,30 +65,30 @@ class Manager {
   Manager() {}
 
   inline unsigned int create_entity() {
-    entities[next_entity_id] = new Entity(next_entity_id);
+    entities[next_entity_id] = std::make_shared<Entity>(next_entity_id);
     next_entity_id++;
     return next_entity_id - 1;
   }
   inline void destroy_entity(unsigned int uid) {
     auto it = entities.find(uid);
     if (it != entities.end()) {
-      delete entities[uid];
+      entities[uid].reset();
       entities.erase(it);
     }
   }
 
-  Entity* get_entity(unsigned int uid) {
+  std::shared_ptr<Entity> get_entity(unsigned int uid) {
     auto it = entities.find(uid);
     if (it != entities.end()) return entities[uid];
     return nullptr;
   }
 
   template <typename Comp>
-  std::vector<Entity*> get_entities_with_components() {
-    std::vector<Entity*> entities_with_components;
+  std::vector<std::shared_ptr<Entity>> get_entities_with_components() {
+    std::vector<std::shared_ptr<Entity>> entities_with_components;
 
-    for (std::pair<unsigned int, Entity*> pair : entities) {
-      Entity* entity = std::get<1>(pair);
+    for (std::pair<unsigned int, std::shared_ptr<Entity>> pair : entities) {
+      std::shared_ptr<Entity> entity = std::get<1>(pair);
       if (entity->contains<Comp>()) entities_with_components.push_back(entity);
     }
 
@@ -96,7 +96,7 @@ class Manager {
   }
 
  private:
-  std::unordered_map<unsigned int, Entity*> entities;
+  std::unordered_map<unsigned int, std::shared_ptr<Entity>> entities;
   unsigned int next_entity_id{0};
 };
 

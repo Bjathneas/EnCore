@@ -32,8 +32,8 @@ public:
     UpdateSystem() {}
     void update(EnCore::Manager manager) override {
         //Get entites with VelComp
-        std::vector<EnCore::Entity*> entities = manager.get_entities_with_components<VelComp>();
-        for(EnCore::Entity* entity : entities){
+        auto entities = manager.get_entities_with_components<VelComp>();
+        for(auto entity : entities){
             //Check that entity has a PosComp
             if(entity->contains<PosComp>()){
                 //Get components
