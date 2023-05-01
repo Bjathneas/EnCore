@@ -80,6 +80,6 @@ int main() {
 
 ## Authors
 
-- [@Bjathneas](EnCore.h)
+- [@Bjathneas](https://github.com/Bjathneas)
 
 
