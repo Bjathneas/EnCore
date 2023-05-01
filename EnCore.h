@@ -21,9 +21,16 @@ struct Component {};
 
 class Entity {
  public:
-  inline Entity(unsigned int uid) : uid(uid) {}
+  Entity(unsigned int uid) : uid(uid) {}
 
-  inline unsigned int get_uid() { return uid; }
+  ~Entity() {
+    for (auto pair : components) {
+      auto component = std::get<1>(pair);
+      component.reset();
+    }
+  }
+
+  unsigned int get_uid() { return uid; }
 
   template <typename Comp>
   void add_component(std::shared_ptr<Comp> component) {
@@ -64,12 +71,19 @@ class Manager {
  public:
   Manager() {}
 
-  inline unsigned int create_entity() {
+  ~Manager() {
+    for (auto pair : entities) {
+      auto entity = std::get<1>(pair);
+      entity.reset();
+    }
+  }
+
+  unsigned int create_entity() {
     entities[next_entity_id] = std::make_shared<Entity>(next_entity_id);
     next_entity_id++;
     return next_entity_id - 1;
   }
-  inline void destroy_entity(unsigned int uid) {
+  void destroy_entity(unsigned int uid) {
     auto it = entities.find(uid);
     if (it != entities.end()) {
       entities[uid].reset();
@@ -87,8 +101,8 @@ class Manager {
   std::vector<std::shared_ptr<Entity>> get_entities_with_components() {
     std::vector<std::shared_ptr<Entity>> entities_with_components;
 
-    for (std::pair<unsigned int, std::shared_ptr<Entity>> pair : entities) {
-      std::shared_ptr<Entity> entity = std::get<1>(pair);
+    for (auto pair : entities) {
+      auto entity = std::get<1>(pair);
       if (entity->contains<Comp>()) entities_with_components.push_back(entity);
     }
 
@@ -104,6 +118,6 @@ class System {
  public:
   System() {}
 
-  virtual void update(Manager manager) = 0;
+  virtual void update(std::shared_ptr<Manager> manager) = 0;
 };
 }  // namespace EnCore
