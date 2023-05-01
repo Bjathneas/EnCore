@@ -18,9 +18,9 @@ struct VelComp : EnCore::Component {
 class UpdateSystem : public EnCore::System {
 public:
     UpdateSystem() {}
-    void update(EnCore::Manager manager) override {
+    void update(std::shared_ptr<EnCore::Manager> manager) override {
         //Get entites with VelComp
-        auto entities = manager.get_entities_with_components<VelComp>();
+        auto entities = manager->get_entities_with_components<VelComp>();
         for(auto entity : entities){
             //Check that entity has a PosComp
             if(entity->contains<PosComp>()){
@@ -40,15 +40,15 @@ public:
 
 int main() {
     //Create the ECS manager
-    auto manager = EnCore::Manager();
+    auto manager = std::make_shared<EnCore::Manager>();
 
     //Create and store entity
-    unsigned int entity_uid = manager.create_entity();
+    unsigned int entity_uid = manager->create_entity();
     //Make components
     auto pos_comp = std::make_shared<PosComp>(10, 10);// x=10 y=10
     auto vel_comp = std::make_shared<VelComp>(3.14, 3.14);// vel_x = 3.14, vel_y = 3.13
     //Get entity and add compnents
-    auto entity = manager.get_entity(entity_uid);
+    auto entity = manager->get_entity(entity_uid);
     entity->add_component(pos_comp);
     entity->add_component(vel_comp);
 
